@@ -1,8 +1,9 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import MainContent from "./MainContent.jsx";
 import logo from '../assets/images/LibrosLegiblesLogo.png'
 import Footer from "./Footer.jsx";
+import { UserContext } from "../context/UserContext.jsx";
 
 /**
  * Administrative navigation bar component.
@@ -20,6 +21,7 @@ function AdminNavigationBar() {
      * @type {[boolean, function]}
      */
     const [open, setOpen] = useState(false);
+    const { logout } = useContext(UserContext);
 
     return (
         <>
@@ -74,7 +76,7 @@ function AdminNavigationBar() {
                                 ? "absolute top-full left-0 w-full flex flex-col items-center py-7 gap-6 shadow-lg z-40" 
                                 : "hidden"
                             }
-                            lg:flex lg:static lg:w-auto lg:flex-row lg:gap-10 lg:p-0 lg:shadow-none lg:bg-transparent
+                            lg:flex lg:static lg:w-auto lg:flex-row lg:gap-10 lg:p-0 lg:shadow-none lg:bg-transparent lg:items-center
                         `}
                     >
                         {/* Cada elemento de navegación debe ir dentro de un <li> */}
@@ -89,7 +91,7 @@ function AdminNavigationBar() {
                                 to="/" 
                                 end
                                 onClick={() => setOpen(false)} 
-                                className="text_normal_bold color_white hover:opacity-80 transition-opacity"
+                                className="text_medium_bold color_white hover:opacity-80 transition-opacity"
                                 aria-current={({ isActive }) => isActive ? "page" : undefined}
                             >
                                 Inicio
@@ -99,7 +101,7 @@ function AdminNavigationBar() {
                             <NavLink 
                                 to="/catalogue" 
                                 onClick={() => setOpen(false)} 
-                                className="text_normal_bold color_white hover:opacity-80 transition-opacity"
+                                className="text_medium_bold color_white hover:opacity-80 transition-opacity"
                                 aria-current={({ isActive }) => isActive ? "page" : undefined}
                             >
                                 Catálogo de Libros
@@ -109,11 +111,19 @@ function AdminNavigationBar() {
                             <NavLink 
                                 to="/admin" 
                                 onClick={() => setOpen(false)} 
-                                className="text_normal_bold color_white hover:opacity-80 transition-opacity"
+                                className="text_medium_bold color_white hover:opacity-80 transition-opacity"
                                 aria-current={({ isActive }) => isActive ? "page" : undefined}
                             >
                                 Administración
                             </NavLink>
+                        </li>
+                        <li>
+                            <button 
+                                onClick={logout}
+                                className="w-fit py-2 px-4 background_color_white rounded-lg color_primary text_normal_bold cursor-pointer"
+                            >
+                                Log Out
+                            </button>
                         </li>
                     </ul>
 

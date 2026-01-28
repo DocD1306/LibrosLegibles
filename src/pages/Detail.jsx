@@ -1,7 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import books from "../data/books.js";
+import useBooks from "../hooks/useBooks";
 import Book from "../components/Book.jsx";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { UserContext } from "../context/UserContext.jsx";
 
 /**
  * Detailed view component for a specific book.
@@ -26,12 +27,33 @@ function Detail() {
      */
     const navigate = useNavigate(); 
 
+    const { userLogged } = useContext(UserContext);
+
+    const { books, loading, error, handleDelete } = useBooks();
+
+    // Esto hace que cuando se pulsa el link de un libro el scroll suba al inicio de la página para que la navegación se más cómoda
+    /**
+     * Effect that triggers a smooth scroll to the top of the window whenever the book ID changes.
+     */
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [id]);
+
     // Esto encuentra el libro correspondiente al id de la URL
     /**
      * The book object matching the ID from the URL.
      * @type {Object|undefined}
      */
-    const book = books.find(book => book.id === Number(id)); 
+    const book = books.find(b => b.id === id);
+
+    const onDeleteDetail = async () => {
+        await handleDelete(id);
+        navigate("/catalogue"); // Redirección tras eliminar el producto de MongoDB
+    };
+
+    if (loading) return <p className="text_medium_bold p-10">Cargando detalles del producto...</p>;
+    if (error) return <p className="text_medium_bold p-10 color_error">Error: {error}</p>;
+    if (!book) return <p className="text_medium_bold p-10">Producto no encontrado</p>;
 
     /**
      * A randomized selection of 3 books excluding the currently viewed one.
@@ -41,14 +63,6 @@ function Detail() {
         .filter(b => b.id !== book.id)
         .sort(() => Math.random() - 0.5)
         .slice(0, 3);
-
-    // Esto hace que cuando se pulsa el link de un libro el scroll suba al inicio de la página para que la navegación se más cómoda
-    /**
-     * Effect that triggers a smooth scroll to the top of the window whenever the book ID changes.
-     */
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, [id]);
 
     return (
         <>
@@ -71,7 +85,7 @@ function Detail() {
                     className="max-w-[350px] h-[500px] flex justify-center mx-auto overflow-hidden rounded-lg"
                 >
                     <img 
-                        src={`/${book.image}`}
+                        src={`${book.imagen}`}
                         alt={`Portada del libro ${book.title}`}
                         className=" h-full object-cover shadow-[0px_0px_20px_rgba(0,0,0,0.25)]"
                     />
@@ -85,15 +99,15 @@ function Detail() {
                         id="book-title" 
                         className="heading_h1 color_primary"
                     >
-                        {book.title}
+                        {book.nombre}
                     </h1>
 
                     <p className="text_medium color_grey_3 mt-2">
-                        {book.genre}
+                        {book.categoria}
                     </p>
 
                     <p className="text_large_bold color_primary mt-4">
-                        {book.price.toFixed(2)} €
+                        {Number(book.precio).toFixed(2)} €
                     </p>
 
                     <h2 className="heading_h5 mt-8 color_primary">
@@ -101,8 +115,17 @@ function Detail() {
                     </h2>
 
                     <p className="text_medium mt-3 color_black_3 leading-relaxed">
-                        {book.synopsis}
+                        {book.descripcion}
                     </p>
+
+                    { userLogged &&
+                        <button 
+                            onClick={onDeleteDetail}
+                            className="w-xs mt-4 py-2 bg-red-600 rounded-lg text-white text_normal_bold cursor-pointer self-center lg:self-auto"
+                        >
+                            Eliminar
+                        </button>
+                    }
 
                 </section>
                 
@@ -127,9 +150,9 @@ function Detail() {
                             <Link 
                                 key={item.id}   
                                 to={`/detail/${item.id}`} 
-                                aria-label={`Ver detalles del libro ${item.title}`}
+                                aria-label={`Ver detalles del libro ${item.nombre}`}
                             >
-                                <Book title={item.title} image={`/${item.image}`} synopsis={item.synopsis}/>
+                                <Book title={item.nombre} image={`${item.imagen}`} synopsis={item.descripcion}/>
                             </Link>   
                         )
                     }

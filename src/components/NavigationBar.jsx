@@ -1,13 +1,14 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import MainContent from "./MainContent.jsx";
 import logo from '../assets/images/LibrosLegiblesLogo.png'
 import Footer from "./Footer.jsx";
-
+import { UserContext } from "../context/UserContext.jsx";
 
 function NavigationBar() {
     /* Estado para controlar la apertura/cierre del menú móvil */
     const [open, setOpen] = useState(false);
+    const { login } = useContext(UserContext);
 
     return (
         <>
@@ -63,7 +64,7 @@ function NavigationBar() {
                                 ? "absolute top-full left-0 w-full flex flex-col items-center py-7 gap-6 shadow-lg z-40" 
                                 : "hidden"
                             }
-                            lg:flex lg:static lg:w-auto lg:flex-row lg:gap-10 lg:p-0 lg:shadow-none lg:bg-transparent
+                            lg:flex lg:static lg:w-auto lg:flex-row lg:gap-10 lg:p-0 lg:shadow-none lg:bg-transparent lg:items-center
                         `}
                     >
                         {/* Cada elemento de navegación debe ir dentro de un <li> */}
@@ -93,6 +94,14 @@ function NavigationBar() {
                             >
                                 Catálogo de Libros
                             </NavLink>
+                        </li>
+                        <li>
+                            <button 
+                                onClick={login}
+                                className="w-fit py-2 px-4 background_color_white rounded-lg color_primary text_normal_bold cursor-pointer"
+                            >
+                                Log In
+                            </button>
                         </li>
                     </ul>
 

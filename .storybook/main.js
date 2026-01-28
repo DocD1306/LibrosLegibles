@@ -8,7 +8,6 @@ const config = {
   ],
   staticDirs: ['../public'],
   "addons": [
-    "@storybook/addon-essentials",
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
     "@storybook/addon-a11y",

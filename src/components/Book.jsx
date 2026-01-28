@@ -1,3 +1,6 @@
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
+
 /**
  * Individual card component representing a book.
  * * This component displays the book's cover image, title, and synopsis 
@@ -13,7 +16,15 @@
 function Book(props) {
 
     /* Desestructuración de las props */
-    const {title, image, synopsis} = props;
+    const {title, image, synopsis, onDelete} = props;
+
+    const { userLogged } = useContext(UserContext);
+
+    const handleDeleteClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onDelete();
+    };
 
     /*
     Este componente representa una tarjeta individual de un libro, contiene la imagen, el título y la sinopsis del libro.
@@ -36,6 +47,15 @@ function Book(props) {
 
             <p className="text_normal_bold pt-3 color_primary">{title}</p>
             <p className="text_small color_grey_2 pt-2">{synopsis}</p>
+
+            { userLogged &&
+                <button 
+                    onClick={handleDeleteClick}
+                    className="w-full mt-4 py-2 bg-red-600 rounded-lg text-white text_normal_bold cursor-pointer"
+                >
+                    Eliminar
+                </button>
+            }
         
         </article>
     )

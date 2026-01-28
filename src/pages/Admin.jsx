@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useAddBook from "../hooks/useAddBook";
 
 /**
  * Admin view component for adding new books to the system.
@@ -10,6 +11,8 @@ import { useState } from "react";
  * @returns {JSX.Element} A container with a book creation form.
  */
 function Admin(){
+
+    const { addNewBook } = useAddBook();
 
     /**
      * State object containing validation error messages.
@@ -59,7 +62,7 @@ function Admin(){
      * Validates the form data and handles the submission process.
      * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
      */
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newErrors = {};
@@ -98,7 +101,7 @@ function Admin(){
             return;
         }
 
-        console.log("Libro creado: ", formData);
+        await addNewBook(formData);
     }
 
     return (

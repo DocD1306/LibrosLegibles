@@ -27,7 +27,7 @@
     "@storybook/addon-docs": "^10.2.0",
     "@storybook/addon-onboarding": "^10.2.0",
     "@storybook/addon-vitest": "^10.2.0",
-    "@storybook/blocks": "latest",
+    "@storybook/blocks": "^9.0.0-alpha.17",
     "@storybook/react-vite": "^10.2.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",

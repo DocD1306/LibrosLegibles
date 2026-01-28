@@ -1,4 +1,5 @@
-import books from "../data/books.js";
+import useGetAllBooks from "../hooks/useBooks";
+import useSearchBooks from "../hooks/useSearchBooks";
 import Book from "../components/Book.jsx";
 import { Link } from "react-router-dom";
 import { useState, useMemo } from "react";
@@ -13,30 +14,23 @@ import SearchBar from "../components/SearchBar.jsx";
  * @returns {JSX.Element} The book catalogue view with search functionality.
  */
 function Catalogue(){
+/**
+     * Consumo de la API Express mediante el hook personalizado.
+     * Gestiona estados de carga, error y la función de eliminar[cite: 126, 176].
+     */
+    const { books, loading, error, handleDelete } = useGetAllBooks();
 
     /**
-     * State for the current search input value.
-     * @type {string}
+     * Gestión del filtrado dinámico mediante el hook de búsqueda[cite: 125].
+     * Se le pasa la lista de libros obtenida de la API.
      */
-    const [searchTerm, setSearchTerm] = useState("");
+    const { searchTerm, setSearchTerm, filteredBooks } = useSearchBooks(books);
 
     /**
-     * Memoized list of books filtered by the title according to the search term.
-     * @type {Array.<Object>}
+     * Renderizado condicional para estados de carga y error exigidos por la actividad.
      */
-    const filteredBooks = useMemo(() => {
-
-        if(!searchTerm) {
-            return books;
-        }
-
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
-
-        return books.filter((book) =>
-            book.title.toLowerCase().includes(lowerCaseSearchTerm)
-        );
-
-    }, [searchTerm]);
+    if (loading) return <p className="text_normal color_grey_2 pt-2 pl-1">Cargando catálogo de productos...</p>;
+    if (error) return <p className="text_normal pt-2 pl-1" style={{color: 'red'}}>Error: {error}</p>;
 
     /*
         Este componente representa el catálogo de libros.
@@ -59,10 +53,15 @@ function Catalogue(){
                         <Link 
                             key={book.id}
                             to={`/detail/${book.id}`} 
-                            aria-label={`Ver detalles del libro ${book.title}`}
+                            aria-label={`Ver detalles del libro ${book.nombre}`}
                         >
-                            <Book title={book.title} image={book.image} synopsis={book.synopsis}/>
-                        </Link>   
+                            <Book 
+                                title={book.nombre} 
+                                image={book.imagen} 
+                                synopsis={book.descripcion}
+                                onDelete={() => handleDelete(book.id)}
+                            />
+                        </Link>
                     )
                 }
             </section>
