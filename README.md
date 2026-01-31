@@ -9,6 +9,8 @@ Alumno:
 
 URL de la API en Render: [https://api-libroslegibles.onrender.com/](https://api-libroslegibles.onrender.com/)
 
+URL de la API en Render que muestra los productos: [https://api-libroslegibles.onrender.com/productos](https://api-libroslegibles.onrender.com/)
+
 URL de la aplicación web en Vercel: [https://libroslegiblesvercel.vercel.app/](https://libroslegiblesvercel.vercel.app/)
 
 El ejecutable original para la aplicación de escritorio se puede encontrar en la carpeta ./dist/libroslegibles Setup 0.0.0.exe  
