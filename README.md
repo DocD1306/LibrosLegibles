@@ -11,9 +11,9 @@ URL de la API en Render: [https://api-libroslegibles.onrender.com/](https://api-
 
 URL de la aplicación web en Vercel: [https://libroslegiblesvercel.vercel.app/](https://libroslegiblesvercel.vercel.app/)
 
-El ejecutable para la aplicación de escritorio se puede encontrar en la carpeta ./dist/libroslegibles Setup 0.0.0.exe  
+El ejecutable original para la aplicación de escritorio se puede encontrar en la carpeta ./dist/libroslegibles Setup 0.0.0.exe  
 
-[libroslegibles Setup 0.0.0.exe](./dist/libroslegibles%20Setup%200.0.0.exe)
+Pero en la raiz del proyecto se puede encontrar una copia llamada "LibrosLegibles.exe".
 
 ## Reflexión 
 
