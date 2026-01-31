@@ -5,54 +5,47 @@ Alumno:
 
 ---
 
-## Elementos de la página web y pruebas de accesibilidad
+## Despliegue de la aplicación 
+
+URL de la API en Render: [https://api-libroslegibles.onrender.com/](https://api-libroslegibles.onrender.com/)
+
+URL de la aplicación web en Vercel: [https://libroslegiblesvercel.vercel.app/](https://libroslegiblesvercel.vercel.app/)
+
+El ejecutable para la aplicación de escritorio se puede encontrar en la carpeta ./dist/libroslegibles Setup 0.0.0.exe  
+
+[libroslegibles Setup 0.0.0.exe](./dist/libroslegibles%20Setup%200.0.0.exe)
+
+## Reflexión 
+
+#### ¿Dónde está desplegada cada parte? 
+
+Se ha desplegado la API de LibrosLegibles (el backend) creada Node.js en la plataforma de Render. La base de datos MongoDB que utiliza dicha API está desplegada de manera automática en los servidores de MongoDB Atlas.
+
+![Despliegue en render](./imagenes_readme/Render.png)
+
+Para el despliegue del frontend creado en React y Vite se ha utilizado la plataforma Vercel.
+
+![Despliegue en vercel](./imagenes_readme/Vercel.png)
+
+#### ¿Qué problemas has encontrado durante el despliegue?  
+
+A la hora de desplegar el proyecto React (el frontend) en Vercel hubo varios errores debido a que todavía estaban presentes los archivos de StoryBook.  
+
+ Además, una vez fue desplegada la web, hubo más problemas a la hora de conectar con el backend en Render, esto fue debido a la falta de configuración de variables de entorno indicando la URI del backend en Render. Sin embargo, se pudo solucionar muy fácilmente añadiendola en la configuración de Vercel.
+
+ 
+#### ¿Qué ventajas tiene el despliegue web frente al de escritorio?
+
+El despliegue web tiene multiples ventajas como la actualización instantánea mediante push con Github, accessibilidad global independientemente del sistema operativo del usuario y simplicidad al no necesitar instalación.
 
 
-Aquí podemos ver la barra de navegación de la página web, esta cambia de tamaño en los textos y el icono según va disminuyendo el tamaño. Además, cuando se hace lo suficientemente pequeño (tamaño tablet o móvil), aparece un menú de hamburguesa para facilitar la navegación en pantallas pequeñas.
+#### ¿Por qué Electron no sustituye a una web? 
 
-Todos estos elementos son navegables por tabulación
+Electron no sustituye a una web porque hace un mayor uso de recursos en el sitema y por tanto gasta más batería que una web, además puede necesitar que el usuario descarge las actualizaciones o que permita que estas se instalen, haciendolo la utilización más compleja. También, Electron ocupa cierto espacio en el dispositivo, normalmente poco, pero aún así es una diferencia frente a utilizar solo el navegador.
 
-<img src="./imagenes_readme/navegacion.png" alt="barra de navegación" width="600"/>
 
-<br>
+#### Capturas de la aplicación de escritorio funcionando
 
-<img src="./imagenes_readme/navegacion_pequenya_cerrada.png" alt="barra de navegación pequeña" width="300"/>
+![Aplicación funcionando](./imagenes_readme/AplicacionFuncionando.png)
 
-<br>
-
-<img src="./imagenes_readme/navegacion_pequenya_abierta.png" alt="barra de navegación pequeña abierta" width="300"/>
-
-<br>
-
-También podemos ver que existe la misma barra de navegación para usuarios no autenticados. Se puede alternar entre ambas cambiando la variable isAuthenticated en el archivo app.js
-
-<img src="./imagenes_readme/navegacion_no_autenticado.png" alt="barra de navegación admin" width="600"/>
-
-<br>
-
-Aquí está el pie de página.
-
-<img src="./imagenes_readme/pie_pagina.png" alt="footer" width="600"/>
-
-<br>
-
-Este es el catálogo de libros. También navegable por teclado y funcional para el lector de pantalla (como los demás elementos de la página)
-
-<img src="./imagenes_readme/catalogo.png" alt="catalogo de libros" width="600"/>
-
-<br>
-
-<img src="./imagenes_readme/lector_pantalla.png" alt="catalogo de libros lector pantalla" width="600"/>
-
-<br>
-
-Por otra parte también hay un link que nos permite saltar al contenido principar de la página para no tener que pasar por todos los elementos de la barra de navegación.
-
-<img src="./imagenes_readme/link_contenido_principal.png" alt="saltar al contenido" width="600"/>
-
-<br>
-
-También existe una página de detalle para los libros. Esta contiene un botón para volver al elemento anterior. Además hay libros recomendados en la parte inferior.
-
-<img src="./imagenes_readme/detalle.png" alt="detalle libro" width="600"/>
-
+![Aplicación funcionando 2](./imagenes_readme/AplicacionFuncionando2.png)
