@@ -2,8 +2,13 @@ import useGetAllBooks from "../hooks/useBooks";
 import useSearchBooks from "../hooks/useSearchBooks";
 import Book from "../components/Book.jsx";
 import { Link } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import SearchBar from "../components/SearchBar.jsx";
+
+// Imports para microfono
+
+import useVoiceRecognition from "../hooks/useVoiceRecognition";
+import { Mic } from "lucide-react"; // npm install lucide-react
 
 /**
  * Catalogue component that displays a searchable list of books.
@@ -26,6 +31,29 @@ function Catalogue(){
      */
     const { searchTerm, setSearchTerm, filteredBooks } = useSearchBooks(books);
 
+    const voice = useVoiceRecognition((text) => setSearchTerm(text));
+
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+    const touchStartX = useRef(null);
+
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.targetTouches[0].clientX;
+    }
+
+    const handleTouchEnd = (e) => {
+        if (!touchStartX.current) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchEndX - touchStartX.current;
+
+        if (diff > 70 && voice.isSupported) {
+            voice.startListening();
+        }
+        
+        touchStartX.current = null;
+    };
+
     /**
      * Renderizado condicional para estados de carga y error exigidos por la actividad.
      */
@@ -41,11 +69,39 @@ function Catalogue(){
             <h1 className="heading_h1 color_primary">Catálogo de libros</h1>
             <p className="text_normal color_grey_2 pt-2 pl-1">Disfruta de una infinidad de historias</p>
             
-            <SearchBar
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                placeholder="Buscar libros por nombre..."
-            />
+            <div 
+                className="relative w-full max-w-lg mx-auto mb-6 z-10"
+                onTouchStart={isMobile ? handleTouchStart : undefined}
+                onTouchEnd={isMobile ? handleTouchEnd : undefined}
+            >
+                {isMobile && voice.isSupported && (
+                    <p className={`text-xs text-center transition-opacity my-5 ${voice.isListening ? "text-red-500 font-bold animate-pulse" : "text-gray-500"}`}>
+                        {voice.isListening 
+                            ? "Escuchando..." 
+                            : "Desliza → para buscar por voz"}
+                    </p>
+                )}
+                <SearchBar
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    placeholder="Buscar libros por nombre..."
+                />
+                {/* Botón de voz solo si es desktop y soporta reconocimiento */}
+                {!isMobile && voice.isSupported && (
+                <button
+                    onClick={voice.startListening}
+                    className={`absolute right-3 top-1/2 -translate-y-1/2 transition
+                    ${voice.isListening
+                        ? "text-red-500 animate-pulse"
+                        : "text-gray-400 hover:text-blue-600"
+                    }`}
+                    title="Buscar por voz"
+                >
+                    <Mic size={20} />
+                </button>
+                )}
+            </div>
+            
 
             <section className="catalogue w-full">
                 {
